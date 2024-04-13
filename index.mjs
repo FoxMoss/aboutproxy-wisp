@@ -1,38 +1,33 @@
-import { createBareServer } from '@tomphttp/bare-server-node';
+import { init, routeRequest, routeUpgrade, shouldRoute } from "wisp-server-cpp"
 import { createServer } from 'node:http';
 import { fileURLToPath } from 'node:url';
+import { epoxyPath } from "@mercuryworkshop/epoxy-transport";
 import serveStatic from 'serve-static';
+import express from "express";
 
-const bare = createBareServer('/bare/');
-const serve = serveStatic(
-	fileURLToPath(new URL('static/', import.meta.url)),
-	{
-		fallthrough: false,
-	}
-);
+init();
+
 const server = createServer();
+const app = express();
+app.use(express.static("static/"));
+app.use("/epoxy/", express.static(epoxyPath));
 
 server.on('request', (req, res) => {
-	if (bare.shouldRoute(req)) {
-		bare.routeRequest(req, res);
-		return;
-	}
-	serve(req, res, (err) => {
-		res.writeHead(err?.statusCode || 500, {
-			'Content-Type': 'text/plain',
-		});
-		res.end("Error.");
-	});
+  if (shouldRoute(req)) {
+    routeRequest(req, res);
+    return;
+  }
+  app(req, res);
 });
 
 server.on('upgrade', (req, socket, head) => {
-	if (bare.shouldRoute(req, socket, head)) {
-		bare.routeUpgrade(req, socket, head);
-	} else {
-		socket.end();
-	}
+  if (shouldRoute(req)) {
+    routeUpgrade(req, socket, head);
+    return;
+  }
+  socket.end();
 });
 
 server.listen({
-	port: process.env.PORT || 8080,
+  port: process.env.PORT || 8080,
 });

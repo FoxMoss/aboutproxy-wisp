@@ -14,6 +14,8 @@
   <link href="chrome-tabs/css/chrome-tabs-dark-theme.css" rel="stylesheet" />
   <link href="material-symbols-outlined.css" rel="stylesheet" />
   <!-- ******** JS ******** -->
+  <script src="/epoxy/index.js"></script>
+  <script src="/bare-mux/bare.cjs"></script>
   <script src="/libs/draggabilly.min.js"></script>
   <script src="/libs/filer.min.js"></script>
   <script src="/libs/jszip.min.js"></script>
@@ -99,7 +101,7 @@
       <div>
         <div class="moreMenu hidden">
           <button onclick="window.aboutbrowser.handleSettingsCtxMenu('newTab');">
-              <span class="material-symbols-outlined menuIcon">tab</span><span class="title">New tab</span>
+            <span class="material-symbols-outlined menuIcon">tab</span><span class="title">New tab</span>
           </button>
           <div class="sep"></div>
           <button onclick="window.aboutbrowser.handleSettingsCtxMenu('history');">
