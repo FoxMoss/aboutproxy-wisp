@@ -61,13 +61,19 @@ class AboutBrowser {
 
         document.querySelector("button[data-add-tab]").addEventListener("click", () => {
             self.openTab();
-        })
+            self.addressBar.value = "";
+            self.addressBar.focus();
+        });
 
         this.addressBar.addEventListener("keydown", (e) => {
             if (e.code === "Enter") {
                 self.navigateTo(self.addressBar.value);
             }
         });
+        this.addressBar.addEventListener("focus", (e) => {
+            this.addressBar.select();
+        });
+
 
         this.settingsCtxMenu = document.querySelector(".moreMenu");
         this.settingsCtxBtn = document.querySelector(".navbarBtn#browserSettings");
