@@ -31,9 +31,9 @@ function encodeUrl(url, proxy) {
 }
 
 function proxyUsingUV(url, callback) {
+  let wispUrl = (location.protocol === "https:" ? "wss" : "ws") + "://" + location.hostname + ":4000/";
+  BareMux.SetTransport("CurlMod.LibcurlClient", { wisp: wispUrl });
   window.navigator.serviceWorker.register('./sw.js', { scope: "/service" }).then(() => {
     callback(baseUrlFor("UV") + encodeUrl(url, "UV"));
   });
-  let wispUrl = (location.protocol === "https:" ? "wss" : "ws") + "://" + location.host + "/wisp/";
-  BareMux.SetTransport("EpxMod.EpoxyClient", { wisp: wispUrl });
 }

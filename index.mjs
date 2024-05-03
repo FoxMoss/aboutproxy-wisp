@@ -1,7 +1,8 @@
 import { init, routeRequest, routeUpgrade, shouldRoute } from "wisp-server-cpp"
 import { createServer } from 'node:http';
+import { libcurlPath } from "@mercuryworkshop/libcurl-transport";
+import { baremuxPath } from "@mercuryworkshop/bare-mux";
 import { fileURLToPath } from 'node:url';
-import { epoxyPath } from "@mercuryworkshop/epoxy-transport";
 import serveStatic from 'serve-static';
 import express from "express";
 
@@ -10,7 +11,8 @@ init();
 const server = createServer();
 const app = express();
 app.use(express.static("static/"));
-app.use("/epoxy/", express.static(epoxyPath));
+app.use("/libcurl/", express.static(libcurlPath));
+app.use("/bare-mux/", express.static(baremuxPath));
 
 server.on('request', (req, res) => {
   if (shouldRoute(req)) {

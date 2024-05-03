@@ -1,8 +1,10 @@
-importScripts('../epoxy/index.js');
+importScripts('../libcurl/index.js');
+importScripts('../bare-mux/bare.cjs');
 importScripts('./uv/uv.bundle.js');
 importScripts('./uv/uv.config.js');
 importScripts('./uv/uv.sw.js');
 
+BareMux.SetTransport("CurlMod.LibcurlClient", { wisp: wispUrl });
 const uv = new UVServiceWorker();
 
 self.addEventListener('fetch', event => {
